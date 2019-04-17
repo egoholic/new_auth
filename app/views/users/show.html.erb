@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @user.email %>
+</p>
+
+<p>
+  <strong>Google token:</strong>
+  <%= @user.google_token %>
+</p>
+
+<p>
+  <strong>Google refresh token:</strong>
+  <%= @user.google_refresh_token %>
+</p>
+
+<p>
+  <strong>Google sheet:</strong>
+  <%= @user.google_sheet_id %>
+</p>
+
+<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Back', users_path %>
