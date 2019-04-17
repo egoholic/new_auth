@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  google_token: MyString
+  google_refresh_token: MyString
+  google_sheet_id: MyString
+
+two:
+  email: MyString
+  password_digest: <%= BCrypt::Password.create('secret') %>
+  google_token: MyString
+  google_refresh_token: MyString
+  google_sheet_id: MyString
