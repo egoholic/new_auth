@@ -8,4 +8,8 @@ Rails.application.routes.draw do
   get 'login', to: 'sessions#new', as: 'login'
   get 'logout', to: 'sessions#destroy', as: 'logout'
   
+  # get 'auth/google_oauth2', to: 'googleAuth'
+  get 'auth/:provider/callback', to: 'sessions#googleAuth'
+  get 'auth/failure', to: redirect('/')
+
 end
