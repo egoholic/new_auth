@@ -6,7 +6,14 @@ class BunqauthController < ApplicationController
     end
 
     def redirect
-        authenticate(params['code']) if !params['code'].nil? 
+        @authresponse = authenticate(params['code']) if !params['code'].nil? 
+        if @authresponse.code == 200 
+            current_user.bunq_token = @authresponse.parsed_response['access_token']
+            current_user.save
+            @message = 'Successfully connected with Bunq'
+        else
+            @message = "Connection failure, #{@authresponse.parsed_response}"
+        end
     end
 
     private
@@ -14,13 +21,13 @@ class BunqauthController < ApplicationController
     def authenticate(oauth_code)
         auth_uri = 'https://api.oauth.bunq.com/v1/token'
 
-        @token = HTTParty.post(auth_uri, query: {grant_type: 'authorization_code',
-                                            code: oauth_code,
-                                            redirect_uri: ENV['bunq_callback_uri'],
-                                            client_id: ENV['bunq_client_id'],
-                                            client_secret: ENV['bunq_client_secret']
-                                        }
-                                    )
+        HTTParty.post(auth_uri, query: {grant_type: 'authorization_code',
+                                        code: oauth_code,
+                                        redirect_uri: ENV['bunq_callback_uri'],
+                                        client_id: ENV['bunq_client_id'],
+                                        client_secret: ENV['bunq_client_secret']
+                                    }
+                                )
     end
 end
 
