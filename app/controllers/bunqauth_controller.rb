@@ -1,0 +1,2 @@
+class BunqauthController < ApplicationController
+end
