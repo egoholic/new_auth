@@ -30,6 +30,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-oauth2', '~> 1.3.1'
 gem 'figaro'
 gem 'httparty'
+gem 'bunq-client'
 
 
 # Use ActiveStorage variant

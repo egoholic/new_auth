@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Account:</strong>
+  <%= @monetary_account.account_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @monetary_account.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_monetary_account_path(@monetary_account) %> |
+<%= link_to 'Back', monetary_accounts_path %>

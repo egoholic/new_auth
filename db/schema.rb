@@ -10,18 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_23_191254) do
+ActiveRecord::Schema.define(version: 2019_04_24_151134) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.integer "bunq_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "monetary_accounts", force: :cascade do |t|
+    t.integer "account_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
-    t.string "google_token"
-    t.string "google_refresh_token"
-    t.string "google_sheet_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "bunq_token"
-    t.string "string"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
