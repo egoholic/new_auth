@@ -4,7 +4,14 @@ class MonetaryAccountsController < ApplicationController
   # GET /monetary_accounts
   # GET /monetary_accounts.json
   def index
-    @monetary_accounts = MonetaryAccount.all
+    @available_accounts = fetch
+    @available_accounts.each do |account| 
+      monetary_account = MonetaryAccount.find_by_account_id(account[:bunq_id])
+      if !monetary_account.nil?
+          account[:user_id] = monetary_account.user_id
+          account[:id] = monetary_account.id
+      end
+    end
   end
 
   # GET /monetary_accounts/1
@@ -22,8 +29,8 @@ class MonetaryAccountsController < ApplicationController
   end
 
   def fetch
-    @available_accounts = Bunq.client.me_as_user.monetary_accounts.index.each_with_object([]) do |monetary_account, arr|
-      account = {id: monetary_account['MonetaryAccountBank']['id'],
+    Bunq.client.me_as_user.monetary_accounts.index.each_with_object([]) do |monetary_account, arr|
+      account = {bunq_id: monetary_account['MonetaryAccountBank']['id'],
                 name: monetary_account['MonetaryAccountBank']['description'],
                 balance: monetary_account['MonetaryAccountBank']['balance']['value']
               }
@@ -33,12 +40,18 @@ class MonetaryAccountsController < ApplicationController
 
   # POST /monetary_accounts
   # POST /monetary_accounts.json
-  def create(account)
-    @monetary_account = MonetaryAccount.new(
-      account_id: account[:id],
-      user_id: current_user.id,
-      name: account[:name]
-    )
+  def create
+    @monetary_account = MonetaryAccount.new(monetary_account_params)
+
+    respond_to do |format|
+      if @monetary_account.save
+        format.html { redirect_to @monetary_account, notice: 'Monetary account was successfully created.' }
+        format.json { render :show, status: :created, location: @monetary_account }
+      else
+        format.html { render :new }
+        format.json { render json: @monetary_account.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /monetary_accounts/1
