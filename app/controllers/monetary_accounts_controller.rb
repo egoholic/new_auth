@@ -4,9 +4,10 @@ class MonetaryAccountsController < ApplicationController
   # GET /monetary_accounts
   # GET /monetary_accounts.json
   def index
+    @monetary_account = MonetaryAccount.new
     @available_accounts = fetch
     @available_accounts.each do |account| 
-      monetary_account = MonetaryAccount.find_by_account_id(account[:bunq_id])
+      monetary_account = MonetaryAccount.find_by_account_id(account[:account_id])
       if !monetary_account.nil?
           account[:user_id] = monetary_account.user_id
           account[:id] = monetary_account.id
@@ -30,7 +31,7 @@ class MonetaryAccountsController < ApplicationController
 
   def fetch
     Bunq.client.me_as_user.monetary_accounts.index.each_with_object([]) do |monetary_account, arr|
-      account = {bunq_id: monetary_account['MonetaryAccountBank']['id'],
+      account = {account_id: monetary_account['MonetaryAccountBank']['id'],
                 name: monetary_account['MonetaryAccountBank']['description'],
                 balance: monetary_account['MonetaryAccountBank']['balance']['value']
               }

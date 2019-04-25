@@ -9,21 +9,24 @@
       <th>Name</th>
       <th>Balance</th>
       <th>User</th>
-      <th colspan="1"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @available_accounts.each do |available_account| %>
       <tr>
-        <td><%= available_account[:bunq_id] %></td>
-        <td><%= available_account[:name] %></td>
-        <td><%= available_account[:balance] %></td>
         <% if !available_account[:id].nil? %>
+          <td><%= available_account[:account_id] %></td>
+          <td><%= available_account[:name] %></td>
+          <td><%= available_account[:balance] %></td>
           <td><%= available_account[:user_id] %></td>
         <% else %>
-          <td> No Record </td>
-          <td><%= link_to 'Create Monetary Account', new_monetary_account_path %></td>
+          <%= form_for @monetary_account, url: {action: "create"} do |f| %>
+            <td><%= f.number_field :account_id, value: available_account[:account_id] %></td>
+            <td><%= f.text_field :name, value: available_account[:name] %></td>
+            <td><%= available_account[:balance] %></td>
+            <td><%= f.submit "Create" %></td>
+          <% end %>
         <% end %>
       </tr>
     <% end %>

@@ -13,6 +13,4 @@ Rails.application.routes.draw do
   
   get 'bunq', to: 'bunqauth#redirect', as: 'bunq'
   get 'bunqlogin', to: 'bunqauth#new', as: 'bunqlogin'
-  get 'monetary_accounts_fetch', to: 'monetary_accounts#fetch', as: 'fetchaccounts'
-
 end
