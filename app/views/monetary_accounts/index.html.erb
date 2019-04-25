@@ -1,36 +1,50 @@
-<p id="notice"><%= notice %></p>
+<% if current_user %>
+  Logged in as <%= current_user.email %>.
+  <%= link_to "Log Out", logout_path %>
+  <p id="notice"><%= notice %></p>
+  <h1>Monetary Accounts</h1>
 
-<h1>Monetary Accounts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Bunq Id</th>
-      <th>Name</th>
-      <th>Balance</th>
-      <th>User</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @available_accounts.each do |available_account| %>
+  <table>
+    <thead>
       <tr>
-        <% if !available_account[:id].nil? %>
-          <td><%= available_account[:account_id] %></td>
-          <td><%= available_account[:name] %></td>
-          <td><%= available_account[:balance] %></td>
-          <td><%= available_account[:user_id] %></td>
-        <% else %>
-          <%= form_for @monetary_account, url: {action: "create"} do |f| %>
-            <td><%= f.number_field :account_id, value: available_account[:account_id] %></td>
-            <td><%= f.text_field :name, value: available_account[:name] %></td>
-            <td><%= available_account[:balance] %></td>
-            <td><%= f.submit "Create" %></td>
-          <% end %>
-        <% end %>
+        <th>Bunq Id</th>
+        <th>Name</th>
+        <th>Balance</th>
+        <th>User</th>
+        <th colspan="1"></th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+
+    <tbody>
+      <% @available_accounts.each do |available_account| %>
+        <tr>
+          <% if !available_account[:id].nil? %>
+            <td><%= available_account[:account_id] %></td>
+            <td><%= available_account[:name] %></td>
+            <td><%= available_account[:balance] %></td>
+            <td><%= available_account[:user_id] %></td>
+          <% else %>
+            <%= form_for @monetary_account, url: {action: "create"} do |f| %>
+              <td><%= f.number_field :account_id, value: available_account[:account_id] %></td>
+              <td><%= f.text_field :name, value: available_account[:name] %></td>
+              <td><%= available_account[:balance] %></td>
+              <td><%= f.number_field :user_id, value: current_user[:id] %></td>
+              <td><%= f.submit "Create" %></td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+
+<% else %>
+  <%= link_to "Sign Up", signup_path %> or 
+  <%= link_to "Log In", login_path %>
+<% end %>
+
+
+
+
 
 
