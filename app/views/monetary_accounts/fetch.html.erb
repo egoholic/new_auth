@@ -14,9 +14,7 @@
         <td><%= available_account[:id] %></td>
         <td><%= available_account[:name] %></td>
         <td><%= available_account[:balance] %></td>
-        <td><%= link_to 'Create', { :action => 'new', :controller => 'monetary_accounts',
-                                     :account_id => available_account[:id], :name => available_account[:name]},
-                                     data: { confirm: 'Are you sure?' }%></td>
+        <td><%= link_to 'Create Monetary Account', new_monetary_account_path %></td>
       </tr>
     <% end %>
   </tbody>

@@ -5,27 +5,29 @@
 <table>
   <thead>
     <tr>
-      <th>Account</th>
+      <th>Bunq Id</th>
+      <th>Name</th>
+      <th>Balance</th>
       <th>User</th>
-      <th colspan="3"></th>
+      <th colspan="1"></th>
     </tr>
   </thead>
 
   <tbody>
-    <% @monetary_accounts.each do |monetary_account| %>
+    <% @available_accounts.each do |available_account| %>
       <tr>
-        <td><%= monetary_account.account_id %></td>
-        <td><%= monetary_account.user_id %></td>
-        <td><%= link_to 'Show', monetary_account %></td>
-        <td><%= link_to 'Edit', edit_monetary_account_path(monetary_account) %></td>
-        <td><%= link_to 'Destroy', monetary_account, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= available_account[:bunq_id] %></td>
+        <td><%= available_account[:name] %></td>
+        <td><%= available_account[:balance] %></td>
+        <% if !available_account[:id].nil? %>
+          <td><%= available_account[:user_id] %></td>
+        <% else %>
+          <td> No Record </td>
+          <td><%= link_to 'Create Monetary Account', new_monetary_account_path %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Monetary Account', new_monetary_account_path %>
-<%= link_to 'Fetch Monetary Account', fetchaccounts_path %>
 

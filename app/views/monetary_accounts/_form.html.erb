@@ -2,7 +2,6 @@
   <% if monetary_account.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(monetary_account.errors.count, "error") %> prohibited this monetary_account from being saved:</h2>
-
       <ul>
       <% monetary_account.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -20,6 +19,11 @@
     <%= form.label :user_id %>
     <%= form.number_field :user_id %>
   </div>
+
+    <div class="field">
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
 
   <div class="actions">
     <%= form.submit %>
