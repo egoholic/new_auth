@@ -41,7 +41,7 @@ class MonetaryAccountsController < ApplicationController
   # POST /monetary_accounts
   # POST /monetary_accounts.json
   def create
-    @monetary_account = MonetaryAccount.new(monetary_account_params)
+    @monetary_account = MonetaryAccount.new
 
     respond_to do |format|
       if @monetary_account.save
