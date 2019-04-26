@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  monetary_account_id: 1
+  amount: 1.5
+  description: MyText
+  transaction_time: 2019-04-25 16:53:22
+  type: MyText
+  synced: 2019-04-25 16:53:22
+
+two:
+  monetary_account_id: 1
+  amount: 1.5
+  description: MyText
+  transaction_time: 2019-04-25 16:53:22
+  type: MyText
+  synced: 2019-04-25 16:53:22
