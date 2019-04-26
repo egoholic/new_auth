@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_24_151134) do
+ActiveRecord::Schema.define(version: 2019_04_26_124413) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.integer "bunq_id"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "monetary_accounts", force: :cascade do |t|
     t.integer "account_id"
@@ -18,6 +25,18 @@ ActiveRecord::Schema.define(version: 2019_04_24_151134) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "monetary_account_id"
+    t.float "amount"
+    t.text "description"
+    t.datetime "transaction_time"
+    t.text "transaction_type"
+    t.datetime "synced"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "bunq_id"
   end
 
   create_table "users", force: :cascade do |t|
