@@ -18,10 +18,10 @@ class SyncService
 
   def perform
     find_unsynced
-    @transactions.each do |id|
-      row = [create_params(id)]
-      response = append_row(row, id)
-      sync_record(id) if response.updates.updated_rows == 1 
+    @transactions.each do |transaction|
+      row = [create_params(transaction)]
+      response = append_row(row, transaction)
+      sync_record(transaction) if response.updates.updated_rows == 1 
       sleep 1
     end
   end
@@ -47,11 +47,10 @@ class SyncService
   end
 
   def find_unsynced
-    @transactions = Transaction.where(synced: nil).map(&:id)
+    @transactions = Transaction.where(synced: nil)
   end
 
-  def create_params(transaction_id)
-    transaction = Transaction.find(transaction_id)
+  def create_params(transaction)
     transaction_params = {
       id: transaction[:id],
       amount: transaction[:amount],
@@ -63,8 +62,8 @@ class SyncService
     transaction_params.values.each_with_object([]) { |value, arr| arr << value.to_s } 
   end
 
-  def append_row(row_data, transaction_id)
-    range = "#{Transaction.find(transaction_id).monetary_account.sheet_name}!A1"
+  def append_row(row_data, transaction)
+    range = "#{transaction.monetary_account.sheet_name}!A1"
     value_input_option = 'USER_ENTERED'
     value_range_object = Google::Apis::SheetsV4::ValueRange.new(values: row_data)
     response = @service.append_spreadsheet_value(
@@ -74,7 +73,7 @@ class SyncService
               value_input_option: value_input_option)
   end
 
-  def sync_record(transaction_id)
-    Transaction.find(transaction_id).update_attribute(:synced, DateTime.now)
+  def sync_record(transaction)
+    transaction.update_attribute(:synced, DateTime.now)
   end
 end
