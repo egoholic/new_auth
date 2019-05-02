@@ -5,7 +5,8 @@ class TransactionService
   end
   
   def perform
-    fetch({last: last_transaction}).each { |payment| create(payment) }
+    last_transaction
+    fetch.each { |payment| create(payment) }
   end
 
   private
@@ -15,13 +16,12 @@ class TransactionService
   end
 
   def last_transaction
-    @monetary_account.transactions.order('transaction_time').last.bunq_id
+    @last_transaction ||= @monetary_account.transactions.order('transaction_time').last.bunq_id
   end
 
-  def fetch(params)
-    last_transaction = params[:last].freeze
+  def fetch
     payments = Bunq.client.me_as_user.monetary_account(@monetary_account.account_id).payments.index(count: 100).each_with_object([]) do |payment,transactions|
-      if payment['Payment']['id'] == last_transaction 
+      if payment['Payment']['id'] == @last_transaction 
         return transactions 
       else 
         transactions << {
